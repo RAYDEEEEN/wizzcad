@@ -13,7 +13,7 @@ describe('TableComponent', () => {
   let fixture: ComponentFixture<TableComponent>;
 
   const dataServiceMock = {
-    findAll: jest.fn().mockReturnValue(of(itemsMock)),
+    findAll: jest.fn().mockReturnValue(of({ totalCount: 16, data: itemsMock })),
     findById: jest.fn()
   };
 
@@ -39,5 +39,19 @@ describe('TableComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('getData()', () => {
+    it('OK', () => {
+      // Given
+      // When
+      component.getData();
+
+      // Then
+      expect(dataServiceMock.findAll).toHaveBeenCalled();
+      expect(component.dataSource).toBeDefined();
+      expect(component.dataSource.data).toEqual(itemsMock);
+      expect(component.totalLength).toBe(16);
+    });
   });
 });

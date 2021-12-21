@@ -2,14 +2,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { environment } from '@environments/environment';
+import { MetaData } from '@shared/interfaces/data.interface';
 import { Item } from '@shared/interfaces/item.interface';
 import { map, Observable } from 'rxjs';
 import { LoginService } from '../login/login.service';
-
-export interface Return {
-  totalCount: number;
-  data: Item[];
-}
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +27,7 @@ export class DataService {
     limit = 25,
     sort?: Sort,
     search?: string
-  ): Observable<Return> {
+  ): Observable<MetaData> {
     const token = this.loginService.token;
     let params = new HttpParams().append('_page', page).append('_limit', limit);
 

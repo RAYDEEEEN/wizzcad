@@ -3,8 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService, Return } from '@core/services/data/data.service';
+import { DataService } from '@core/services/data/data.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { MetaData } from '@shared/interfaces/data.interface';
 import { Item } from '@shared/interfaces/item.interface';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
@@ -87,7 +88,7 @@ export class TableComponent implements OnInit {
     this.dataService
       .findAll(this.page, this.pageSize, this.sort, this.searchValue)
       .pipe(untilDestroyed(this))
-      .subscribe(({ totalCount, data }: Return) => {
+      .subscribe(({ totalCount, data }: MetaData) => {
         this.initDataSource(data);
         this.totalLength = totalCount;
       });
