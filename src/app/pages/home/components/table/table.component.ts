@@ -40,12 +40,17 @@ export class TableComponent implements OnInit {
     private readonly fb: FormBuilder
   ) {}
 
+  initSortAndPaginator(): void {
+    this.dataSource.sort = this.matSort;
+    this.dataSource.paginator = this.paginator;
+  }
+
   ngOnInit(): void {
     this.searchGroup = this.fb.group({
       search: ''
     });
 
-    this.getData();
+    this.getData(true);
 
     this.searchGroup
       .get('search')
@@ -60,12 +65,6 @@ export class TableComponent implements OnInit {
       });
   }
 
-  initDataSource(data: Item[]): void {
-    this.dataSource = new MatTableDataSource(data);
-    this.dataSource.sort = this.matSort;
-    this.dataSource.paginator = this.paginator;
-  }
-
   getCurrentPage({ pageSize, pageIndex }: PageEvent): void {
     this.page = pageIndex;
     this.pageSize = pageSize;
@@ -74,15 +73,20 @@ export class TableComponent implements OnInit {
 
   sortData(sort: Sort): void {
     this.sort = sort;
+    this.page = 0;
+    this.paginator.firstPage();
     this.getData();
   }
 
-  getData(): void {
+  getData(isFirstTime = false): void {
     this.dataService
       .findAll(this.page, this.pageSize, this.sort, this.searchValue)
       .pipe(untilDestroyed(this))
       .subscribe(({ totalCount, data }: MetaData) => {
-        this.initDataSource(data);
+        this.dataSource = new MatTableDataSource(data);
+
+        isFirstTime && this.initSortAndPaginator();
+
         this.totalLength = totalCount;
       });
   }
