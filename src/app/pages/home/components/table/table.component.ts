@@ -50,6 +50,7 @@ export class TableComponent implements OnInit {
     this.searchGroup = this.fb.group({
       search: ''
     });
+
     this.getData();
 
     this.searchGroup
@@ -89,7 +90,6 @@ export class TableComponent implements OnInit {
       .subscribe(({ totalCount, data }: Return) => {
         this.initDataSource(data);
         this.totalLength = totalCount;
-        console.log(totalCount);
       });
   }
 }
