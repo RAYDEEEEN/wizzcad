@@ -31,7 +31,7 @@ export class DataService {
     const token = this.loginService.token;
     let params = new HttpParams().append('_page', page).append('_limit', limit);
 
-    params = search && params.append('name_like', search);
+    params = search ? params.append('name_like', search) : params;
 
     params =
       sort && sort.direction

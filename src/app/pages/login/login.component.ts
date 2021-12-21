@@ -33,14 +33,14 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       login: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
-  login() {
+  login(): void {
     this.loginService
       .connection(this.loginForm.value.login, this.loginForm.value.password)
       .pipe(untilDestroyed(this))

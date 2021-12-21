@@ -9,13 +9,6 @@ import { MetaData } from '@shared/interfaces/data.interface';
 import { Item } from '@shared/interfaces/item.interface';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
-
 @UntilDestroy()
 @Component({
   selector: 'app-table',
@@ -47,7 +40,7 @@ export class TableComponent implements OnInit {
     private readonly fb: FormBuilder
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.searchGroup = this.fb.group({
       search: ''
     });
@@ -67,24 +60,24 @@ export class TableComponent implements OnInit {
       });
   }
 
-  public initDataSource(data: Item[]): void {
+  initDataSource(data: Item[]): void {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.sort = this.matSort;
     this.dataSource.paginator = this.paginator;
   }
 
-  public getCurrentPage({ pageSize, pageIndex }: PageEvent) {
+  getCurrentPage({ pageSize, pageIndex }: PageEvent): void {
     this.page = pageIndex;
     this.pageSize = pageSize;
     this.getData();
   }
 
-  public sortData(sort: Sort) {
+  sortData(sort: Sort): void {
     this.sort = sort;
     this.getData();
   }
 
-  public getData() {
+  getData(): void {
     this.dataService
       .findAll(this.page, this.pageSize, this.sort, this.searchValue)
       .pipe(untilDestroyed(this))
