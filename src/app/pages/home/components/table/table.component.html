@@ -1,13 +1,7 @@
 <form [formGroup]="searchGroup">
   <mat-form-field appearance="standard">
     <mat-label>Search by name</mat-label>
-    <input
-      matInput
-      (keyup.enter)="applyFilter($event)"
-      placeholder="Test 15"
-      formControlName="search"
-      #input
-    />
+    <input matInput placeholder="Test 15" formControlName="search" #input />
   </mat-form-field>
 </form>
 
@@ -69,7 +63,6 @@
       </tr>
     </table>
   </div>
-
   <mat-paginator
     (page)="getCurrentPage($event)"
     [pageSizeOptions]="[5, 10, 25, 100]"

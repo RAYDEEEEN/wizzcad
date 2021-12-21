@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { Sort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService, Return } from '@core/services/data/data.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -21,7 +21,7 @@ export interface UserData {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit, AfterViewInit {
+export class TableComponent implements OnInit {
   public displayedColumns: string[] = [
     'id',
     'name',
@@ -40,7 +40,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   public searchValue: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  @ViewChild(MatSort) matSort: MatSort;
   constructor(
     private readonly dataService: DataService,
     private readonly fb: FormBuilder
@@ -65,13 +65,10 @@ export class TableComponent implements OnInit, AfterViewInit {
       });
   }
 
-  public ngAfterViewInit(): void {
+  public initDataSource(data: Item[]): void {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.sort = this.matSort;
     this.dataSource.paginator = this.paginator;
-  }
-
-  public applyFilter(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    console.log(value);
   }
 
   public getCurrentPage({ pageSize, pageIndex }: PageEvent) {
@@ -90,8 +87,9 @@ export class TableComponent implements OnInit, AfterViewInit {
       .findAll(this.page, this.pageSize, this.sort, this.searchValue)
       .pipe(untilDestroyed(this))
       .subscribe(({ totalCount, data }: Return) => {
-        this.dataSource = new MatTableDataSource(data);
+        this.initDataSource(data);
         this.totalLength = totalCount;
+        console.log(totalCount);
       });
   }
 }

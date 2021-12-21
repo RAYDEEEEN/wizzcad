@@ -19,7 +19,8 @@
       "@pages/*": ["src/app/pages/*"],
       "@shared/*": ["src/app/shared/*"],
       "@environments/*": ["src/environments/*"],
-      "@layout/*": ["src/app/layout/*"]
+      "@layout/*": ["src/app/layout/*"],
+      "@tests/*": ["src/app/tests/*"]
     },
     "target": "es2017",
     "module": "es2020",
